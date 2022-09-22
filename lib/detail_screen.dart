@@ -2,12 +2,19 @@ import 'package:bane/model/news_popular.dart';
 import 'package:bane/model/news_recommendation.dart';
 import 'package:flutter/material.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final NewsPopular? popular;
   final NewsRecommendation? recommendation;
 
   const DetailScreen({Key? key, this.popular, this.recommendation}) : super(key: key);
 
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool resize = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +56,24 @@ class DetailScreen extends StatelessWidget {
                 ),
               ],
             ),
+            
             Container(
-              margin: const EdgeInsets.only(top: 16.0, left: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Text('Perbesar Text'),
+                  Switch(value: resize, onChanged: (bool value){
+                    setState(() {
+                      resize = value;
+                    });
+                  })
+                ],
+              ),
+            ),
+            
+            Container(
+              margin: const EdgeInsets.only(left: 16.0),
               child: Text(
                 title(),
                 style: Theme.of(context).textTheme.titleLarge,
@@ -67,7 +90,10 @@ class DetailScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 caption(),
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: TextStyle(
+                  fontSize: resize? 16.0 : 14.0,
+                  color: Colors.black87,
+                ),
               ),
             ),
             Container(
@@ -83,42 +109,42 @@ class DetailScreen extends StatelessWidget {
   }
 
   String image(){
-    if (recommendation != null){
-      return recommendation!.image;
+    if (widget.recommendation != null){
+      return widget.recommendation!.image;
     } else {
-      return popular!.image;
+      return widget.popular!.image;
     }
   }
 
   String title(){
-    if (recommendation != null){
-      return recommendation!.title;
+    if (widget.recommendation != null){
+      return widget.recommendation!.title;
     } else {
-      return popular!.title;
+      return widget.popular!.title;
     }
   }
 
   String date(){
-    if (recommendation != null){
-      return recommendation!.date;
+    if (widget.recommendation != null){
+      return widget.recommendation!.date;
     } else {
-      return popular!.date;
+      return widget.popular!.date;
     }
   }
 
   String source(){
-    if (recommendation != null){
-      return recommendation!.source;
+    if (widget.recommendation != null){
+      return widget.recommendation!.source;
     } else {
-      return popular!.source;
+      return widget.popular!.source;
     }
   }
 
   String caption(){
-    if (recommendation != null){
-      return recommendation!.caption;
+    if (widget.recommendation != null){
+      return widget.recommendation!.caption;
     } else {
-      return popular!.caption;
+      return widget.popular!.caption;
     }
   }
 }
